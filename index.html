@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Emotion Mascot</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #1b1b23;
+        --muted: #666978;
+        --panel: #ffffff;
+        --line: #dfe3ea;
+        --accent: #246bfe;
+        --accent-ink: #ffffff;
+        --page: #f3f5f8;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+        color: var(--ink);
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.8), transparent 44%),
+          var(--page);
+        display: grid;
+        place-items: center;
+        padding: 24px;
+      }
+
+      main {
+        width: min(100%, 900px);
+        display: grid;
+        gap: 18px;
+      }
+
+      .stage {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        min-height: min(72vh, 620px);
+        display: grid;
+        place-items: center;
+        overflow: hidden;
+        box-shadow: 0 18px 50px rgba(35, 43, 70, 0.12);
+      }
+
+      canvas {
+        width: 100%;
+        height: min(72vh, 620px);
+        display: block;
+      }
+
+      .controls {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 12px;
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      button {
+        appearance: none;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #f8fafc;
+        color: var(--ink);
+        min-height: 48px;
+        padding: 0 14px;
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+        transition:
+          background 160ms ease,
+          border-color 160ms ease,
+          color 160ms ease,
+          transform 160ms ease;
+      }
+
+      button:hover,
+      button:focus-visible {
+        border-color: var(--accent);
+        outline: none;
+        transform: translateY(-1px);
+      }
+
+      button:disabled {
+        cursor: wait;
+        opacity: 0.6;
+        transform: none;
+      }
+
+      button[aria-pressed="true"] {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: var(--accent-ink);
+      }
+
+      .status {
+        min-height: 20px;
+        color: var(--muted);
+        font-size: 14px;
+        text-align: center;
+      }
+
+      @media (max-width: 640px) {
+        body {
+          padding: 14px;
+        }
+
+        .stage {
+          min-height: 58vh;
+        }
+
+        canvas {
+          height: 58vh;
+        }
+
+        .controls {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section class="stage" aria-label="Mascot preview">
+        <canvas id="mascot" width="1200" height="800"></canvas>
+      </section>
+
+      <section class="controls" aria-label="Emotion controls">
+        <button type="button" data-emotion="1" aria-pressed="false">Emotion 1</button>
+        <button type="button" data-emotion="2" aria-pressed="false">Emotion 2</button>
+        <button type="button" data-emotion="3" aria-pressed="false">Emotion 3</button>
+        <button type="button" data-emotion="4" aria-pressed="false">Emotion 4</button>
+      </section>
+
+      <div class="status" id="status" role="status">Loading mascot...</div>
+    </main>
+
+    <script src="https://unpkg.com/@rive-app/canvas@2.24.0/rive.js"></script>
+    <script>
+      const canvas = document.querySelector("#mascot");
+      const buttons = Array.from(document.querySelectorAll("[data-emotion]"));
+      const status = document.querySelector("#status");
+      const stateMachineName = "State Machine 1";
+      const idleEmotionValue = 67;
+      let mascot;
+      let emotionInput;
+      let startEmotionTimer;
+      let loadVersion = 0;
+
+      const setButtonsEnabled = (enabled) => {
+        buttons.forEach((button) => {
+          button.disabled = !enabled;
+        });
+      };
+
+      setButtonsEnabled(false);
+
+      const setActiveButton = (value) => {
+        buttons.forEach((button) => {
+          button.setAttribute("aria-pressed", button.dataset.emotion === String(value));
+        });
+      };
+
+      const loadMascot = (emotionToPlay = idleEmotionValue) => {
+        const version = ++loadVersion;
+        clearTimeout(startEmotionTimer);
+        emotionInput = undefined;
+        setButtonsEnabled(false);
+
+        if (mascot) {
+          mascot.cleanup();
+        }
+
+        const context = canvas.getContext("2d");
+        context.clearRect(0, 0, canvas.width, canvas.height);
+
+        mascot = new rive.Rive({
+          src: "og_donk.riv",
+          canvas,
+          autoplay: true,
+          stateMachines: stateMachineName,
+          layout: new rive.Layout({
+            fit: rive.Fit.Contain,
+            alignment: rive.Alignment.Center,
+          }),
+          onLoad: () => {
+            if (version !== loadVersion) {
+              return;
+            }
+
+            mascot.resizeDrawingSurfaceToCanvas();
+            const inputs = mascot.stateMachineInputs(stateMachineName);
+            emotionInput = inputs.find((input) => input.name === "emotion");
+
+            if (!emotionInput) {
+              status.textContent = 'Could not find an input named "emotion".';
+              return;
+            }
+
+            emotionInput.value = idleEmotionValue;
+            setButtonsEnabled(true);
+
+            if (emotionToPlay === idleEmotionValue) {
+              setActiveButton(0);
+              status.textContent = "Idle";
+              return;
+            }
+
+            setActiveButton(emotionToPlay);
+            status.textContent = `Showing emotion ${emotionToPlay}`;
+            startEmotionTimer = setTimeout(() => {
+              if (version === loadVersion) {
+                emotionInput.value = idleEmotionValue;
+              }
+            }, 80);
+            startEmotionTimer = setTimeout(() => {
+              if (version === loadVersion) {
+                emotionInput.value = emotionToPlay;
+              }
+            }, 180);
+          },
+          onLoadError: () => {
+            if (version === loadVersion) {
+              status.textContent = "Could not load og_donk.riv.";
+            }
+          },
+        });
+      };
+
+      const setEmotion = (value) => {
+        if (!emotionInput) {
+          status.textContent = "Emotion input is not ready yet.";
+          return;
+        }
+
+        setActiveButton(value);
+        status.textContent = `Loading emotion ${value}`;
+        loadMascot(value);
+      };
+
+      loadMascot();
+
+      buttons.forEach((button) => {
+        button.addEventListener("click", () => {
+          setEmotion(Number(button.dataset.emotion));
+        });
+      });
+
+      window.addEventListener("resize", () => {
+        if (mascot) {
+          mascot.resizeDrawingSurfaceToCanvas();
+        }
+      });
+    </script>
+  </body>
+</html>
