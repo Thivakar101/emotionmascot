@@ -70,6 +70,7 @@
 
       button {
         appearance: none;
+        position: relative;
         border: 1px solid var(--line);
         border-radius: 8px;
         background: #f8fafc;
@@ -103,6 +104,29 @@
         background: var(--accent);
         border-color: var(--accent);
         color: var(--accent-ink);
+      }
+      button[data-new="true"]::after {
+        content: "NEW";
+        position: absolute;
+        top: -9px;
+        right: 12px;
+        min-width: 38px;
+        padding: 3px 7px;
+        border-radius: 999px;
+        background: #ffcf33;
+        color: #2a2100;
+        font-size: 11px;
+        font-weight: 900;
+        line-height: 1;
+        box-shadow: 0 5px 14px rgba(79, 61, 0, 0.18);
+        transform: scale(0.92);
+        transform-origin: center;
+        transition: transform 160ms ease;
+      }
+
+      button[data-new="true"]:hover::after,
+      button[data-new="true"]:focus-visible::after {
+        transform: scale(1);
       }
 
       .status {
@@ -145,13 +169,19 @@
 
       <section class="controls" aria-label="Emotion controls">
         <button type="button" data-emotion="8" aria-pressed="false">focused</button>
+        <button type="button" data-emotion="11" data-new="true" aria-pressed="false">Emotion 11</button>
         <button type="button" data-emotion="1" aria-pressed="false">happy</button>
+        <button type="button" data-emotion="12" data-new="true" aria-pressed="false">Emotion 12</button>
         <button type="button" data-emotion="6" aria-pressed="false">WHATTT</button>
         <button type="button" data-emotion="4" aria-pressed="false">cheeky</button>
+        <button type="button" data-emotion="13" data-new="true" aria-pressed="false">Emotion 13</button>
         <button type="button" data-emotion="3" aria-pressed="false">proud</button>
+        <button type="button" data-emotion="14" data-new="true" aria-pressed="false">Emotion 14</button>
         <button type="button" data-emotion="9" aria-pressed="false">about to cry</button>
         <button type="button" data-emotion="7" aria-pressed="false">ego</button>
+        <button type="button" data-emotion="15" data-new="true" aria-pressed="false">Emotion 15</button>
         <button type="button" data-emotion="2" aria-pressed="false">lol</button>
+        <button type="button" data-emotion="16" data-new="true" aria-pressed="false">Emotion 16</button>
         <button type="button" data-emotion="10" aria-pressed="false">last one lets go &gt;&gt;&gt;</button>
         <button type="button" data-emotion="5" aria-pressed="false">impatient</button>
       </section>
