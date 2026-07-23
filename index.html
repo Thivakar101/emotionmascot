@@ -20,9 +20,12 @@
         box-sizing: border-box;
       }
 
+      html, body {
+        height: 100%;
+      }
+
       body {
         margin: 0;
-        min-height: 100vh;
         font-family:
           Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
           "Segoe UI", sans-serif;
@@ -30,22 +33,26 @@
         background:
           linear-gradient(180deg, rgba(255, 255, 255, 0.8), transparent 44%),
           var(--page);
-        display: grid;
-        place-items: center;
-        padding: 24px;
+        overflow: hidden; /* page itself never scrolls */
       }
 
       main {
         width: min(100%, 900px);
-        display: grid;
+        height: 100%;
+        margin: 0 auto;
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
         gap: 18px;
+        min-height: 0; /* required so children can scroll instead of growing main */
       }
 
       .stage {
         background: var(--panel);
         border: 1px solid var(--line);
         border-radius: 8px;
-        min-height: min(72vh, 620px);
+        flex: 0 0 auto; /* fixed, never shrinks or grows */
+        height: min(72vh, 620px);
         display: grid;
         place-items: center;
         overflow: hidden;
@@ -54,8 +61,18 @@
 
       canvas {
         width: 100%;
-        height: min(72vh, 620px);
+        height: 100%;
         display: block;
+      }
+
+      .panel {
+        flex: 1 1 auto;
+        min-height: 0; /* required for the overflow to actually scroll in a flex child */
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
       }
 
       .controls {
@@ -134,19 +151,16 @@
         color: var(--muted);
         font-size: 14px;
         text-align: center;
+        flex: 0 0 auto;
       }
 
       @media (max-width: 640px) {
-        body {
+        main {
           padding: 14px;
         }
 
         .stage {
-          min-height: 58vh;
-        }
-
-        canvas {
-          height: 58vh;
+          height: 42vh;
         }
 
         .controls {
@@ -167,26 +181,28 @@
         <canvas id="mascot" width="1200" height="800"></canvas>
       </section>
 
-      <section class="controls" aria-label="Emotion controls">
-        <button type="button" data-emotion="8" aria-pressed="false">focused</button>
-        <button type="button" data-emotion="11" data-new="true" aria-pressed="false">thinking</button>
-        <button type="button" data-emotion="1" aria-pressed="false">happy</button>
-        <button type="button" data-emotion="12" data-new="true" aria-pressed="false">that was... good</button>
-        <button type="button" data-emotion="6" aria-pressed="false">WHATTT</button>
-        <button type="button" data-emotion="4" aria-pressed="false">cheeky</button>
-        <button type="button" data-emotion="13" data-new="true" aria-pressed="false">greedy laugh</button>
-        <button type="button" data-emotion="3" aria-pressed="false">proud</button>
-        <button type="button" data-emotion="14" data-new="true" aria-pressed="false">are you fr?</button>
-        <button type="button" data-emotion="9" aria-pressed="false">about to cry</button>
-        <button type="button" data-emotion="7" aria-pressed="false">ego</button>
-        <button type="button" data-emotion="15" data-new="true" aria-pressed="false">yawning</button>
-        <button type="button" data-emotion="2" aria-pressed="false">lol</button>
-        <button type="button" data-emotion="16" data-new="true" aria-pressed="false">derpy</button>
-        <button type="button" data-emotion="10" aria-pressed="false">last one lets go &gt;&gt;&gt;</button>
-        <button type="button" data-emotion="5" aria-pressed="false">impatient</button>
-      </section>
+      <div class="panel">
+        <section class="controls" aria-label="Emotion controls">
+          <button type="button" data-emotion="8" aria-pressed="false">focused</button>
+          <button type="button" data-emotion="11" data-new="true" aria-pressed="false">thinking</button>
+          <button type="button" data-emotion="1" aria-pressed="false">happy</button>
+          <button type="button" data-emotion="12" data-new="true" aria-pressed="false">that was... good ig</button>
+          <button type="button" data-emotion="6" aria-pressed="false">WHATTT</button>
+          <button type="button" data-emotion="4" aria-pressed="false">cheeky</button>
+          <button type="button" data-emotion="13" data-new="true" aria-pressed="false">greedy laugh</button>
+          <button type="button" data-emotion="3" aria-pressed="false">proud</button>
+          <button type="button" data-emotion="14" data-new="true" aria-pressed="false">are you fr?</button>
+          <button type="button" data-emotion="9" aria-pressed="false">about to cry</button>
+          <button type="button" data-emotion="7" aria-pressed="false">ego</button>
+          <button type="button" data-emotion="15" data-new="true" aria-pressed="false">yawning</button>
+          <button type="button" data-emotion="2" aria-pressed="false">lol</button>
+          <button type="button" data-emotion="16" data-new="true" aria-pressed="false">derpy</button>
+          <button type="button" data-emotion="10" aria-pressed="false">last one lets go &gt;&gt;&gt;</button>
+          <button type="button" data-emotion="5" aria-pressed="false">impatient</button>
+        </section>
 
-      <div class="status" id="status" role="status">Loading mascot...</div>
+        <div class="status" id="status" role="status">Loading mascot...</div>
+      </div>
     </main>
 
     <script src="https://unpkg.com/@rive-app/canvas@2.24.0/rive.js"></script>
