@@ -26,6 +26,7 @@
 
       body {
         margin: 0;
+        height: 100vh;
         font-family:
           Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
           "Segoe UI", sans-serif;
@@ -33,12 +34,15 @@
         background:
           linear-gradient(180deg, rgba(255, 255, 255, 0.8), transparent 44%),
           var(--page);
+        display: grid;
+        place-items: center;
+        padding: 24px;
         overflow: hidden; /* page itself never scrolls */
       }
 
       main {
-        width: min(100%, 900px);
-        height: 100%;
+        width: min(100%, 1180px);
+        height: min(100%, 760px);
         margin: 0 auto;
         padding: 24px;
         display: flex;
@@ -81,7 +85,8 @@
         border-radius: 8px;
         padding: 12px;
         display: grid;
-        grid-template-columns: repeat(5, minmax(0, 1fr));
+        grid-template-columns: 1fr;
+        align-content: start;
         gap: 10px;
       }
 
@@ -163,6 +168,10 @@
           height: 42vh;
         }
 
+        canvas {
+          height: 100%;
+        }
+
         .controls {
           grid-template-columns: repeat(2, minmax(0, 1fr));
         }
@@ -184,21 +193,26 @@
       <div class="panel">
         <section class="controls" aria-label="Emotion controls">
           <button type="button" data-emotion="8" aria-pressed="false">focused</button>
-          <button type="button" data-emotion="11" data-new="true" aria-pressed="false">thinking</button>
+          <button type="button" data-emotion="11" aria-pressed="false">thinking</button>
           <button type="button" data-emotion="1" aria-pressed="false">happy</button>
-          <button type="button" data-emotion="12" data-new="true" aria-pressed="false">that was... good ig</button>
+          <button type="button" data-emotion="12" aria-pressed="false">that was... good ig</button>
           <button type="button" data-emotion="6" aria-pressed="false">WHATTT</button>
           <button type="button" data-emotion="4" aria-pressed="false">cheeky</button>
-          <button type="button" data-emotion="13" data-new="true" aria-pressed="false">greedy laugh</button>
+          <button type="button" data-emotion="13" aria-pressed="false">greedy laugh</button>
           <button type="button" data-emotion="3" aria-pressed="false">proud</button>
-          <button type="button" data-emotion="14" data-new="true" aria-pressed="false">are you fr?</button>
+          <button type="button" data-emotion="14" aria-pressed="false">are you fr?</button>
           <button type="button" data-emotion="9" aria-pressed="false">about to cry</button>
           <button type="button" data-emotion="7" aria-pressed="false">ego</button>
-          <button type="button" data-emotion="15" data-new="true" aria-pressed="false">yawning</button>
+          <button type="button" data-emotion="15" aria-pressed="false">yawning</button>
           <button type="button" data-emotion="2" aria-pressed="false">lol</button>
-          <button type="button" data-emotion="16" data-new="true" aria-pressed="false">derpy</button>
+          <button type="button" data-emotion="16" aria-pressed="false">derpy</button>
           <button type="button" data-emotion="10" aria-pressed="false">last one lets go &gt;&gt;&gt;</button>
+          <button type="button" data-emotion="17" data-new="true" aria-pressed="false">Emotion 17</button>
           <button type="button" data-emotion="5" aria-pressed="false">impatient</button>
+          <button type="button" data-emotion="18" data-new="true" aria-pressed="false">Emotion 18</button>
+          <button type="button" data-emotion="19" data-new="true" aria-pressed="false">Emotion 19</button>
+          <button type="button" data-emotion="20" data-new="true" aria-pressed="false">Emotion 20</button>
+          <button type="button" data-emotion="21" data-new="true" aria-pressed="false">Emotion 21</button>
         </section>
 
         <div class="status" id="status" role="status">Loading mascot...</div>
