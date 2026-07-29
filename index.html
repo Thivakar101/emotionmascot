@@ -44,19 +44,18 @@
         width: min(100%, 1180px);
         height: min(100%, 760px);
         margin: 0 auto;
-        padding: 24px;
-        display: flex;
-        flex-direction: column;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 320px;
+        grid-template-rows: minmax(0, 1fr);
         gap: 18px;
-        min-height: 0; /* required so children can scroll instead of growing main */
+        min-height: 0;
       }
 
       .stage {
         background: var(--panel);
         border: 1px solid var(--line);
         border-radius: 8px;
-        flex: 0 0 auto; /* fixed, never shrinks or grows */
-        height: min(72vh, 620px);
+        min-height: 0;
         display: grid;
         place-items: center;
         overflow: hidden;
@@ -70,9 +69,8 @@
       }
 
       .panel {
-        flex: 1 1 auto;
-        min-height: 0; /* required for the overflow to actually scroll in a flex child */
-        overflow-y: auto;
+        min-height: 0;
+        overflow: hidden;
         -webkit-overflow-scrolling: touch;
         display: flex;
         flex-direction: column;
@@ -88,6 +86,10 @@
         grid-template-columns: 1fr;
         align-content: start;
         gap: 10px;
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow-y: auto;
+        overscroll-behavior: contain;
       }
 
       button {
@@ -160,12 +162,18 @@
       }
 
       @media (max-width: 640px) {
-        main {
+        body {
           padding: 14px;
         }
 
+        main {
+          height: 100%;
+          grid-template-columns: 1fr;
+          grid-template-rows: minmax(0, 1fr) minmax(190px, 38vh);
+        }
+
         .stage {
-          height: 42vh;
+          min-height: 0;
         }
 
         canvas {
@@ -178,8 +186,8 @@
       }
 
       @media (min-width: 641px) and (max-width: 900px) {
-        .controls {
-          grid-template-columns: repeat(3, minmax(0, 1fr));
+        main {
+          grid-template-columns: minmax(0, 1fr) 280px;
         }
       }
     </style>
@@ -192,6 +200,11 @@
 
       <div class="panel">
         <section class="controls" aria-label="Emotion controls">
+          <button type="button" data-emotion="22" data-new="true" aria-pressed="false">Emotion 22</button>
+          <button type="button" data-emotion="23" data-new="true" aria-pressed="false">Emotion 23</button>
+          <button type="button" data-emotion="24" data-new="true" aria-pressed="false">Emotion 24</button>
+          <button type="button" data-emotion="25" data-new="true" aria-pressed="false">Emotion 25</button>
+          <button type="button" data-emotion="26" data-new="true" aria-pressed="false">Emotion 26</button>
           <button type="button" data-emotion="8" aria-pressed="false">focused</button>
           <button type="button" data-emotion="11" aria-pressed="false">thinking</button>
           <button type="button" data-emotion="1" aria-pressed="false">happy</button>
@@ -207,12 +220,12 @@
           <button type="button" data-emotion="2" aria-pressed="false">lol</button>
           <button type="button" data-emotion="16" aria-pressed="false">derpy</button>
           <button type="button" data-emotion="10" aria-pressed="false">last one lets go &gt;&gt;&gt;</button>
-          <button type="button" data-emotion="17" data-new="true" aria-pressed="false">Emotion 17</button>
+          <button type="button" data-emotion="17" aria-pressed="false">Emotion 17</button>
           <button type="button" data-emotion="5" aria-pressed="false">impatient</button>
-          <button type="button" data-emotion="18" data-new="true" aria-pressed="false">Emotion 18</button>
-          <button type="button" data-emotion="19" data-new="true" aria-pressed="false">Emotion 19</button>
-          <button type="button" data-emotion="20" data-new="true" aria-pressed="false">Emotion 20</button>
-          <button type="button" data-emotion="21" data-new="true" aria-pressed="false">Emotion 21</button>
+          <button type="button" data-emotion="18" aria-pressed="false">Emotion 18</button>
+          <button type="button" data-emotion="19" aria-pressed="false">Emotion 19</button>
+          <button type="button" data-emotion="20" aria-pressed="false">Emotion 20</button>
+          <button type="button" data-emotion="21" aria-pressed="false">Emotion 21</button>
         </section>
 
         <div class="status" id="status" role="status">Loading mascot...</div>
