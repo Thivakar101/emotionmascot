@@ -44,6 +44,7 @@
         width: min(100%, 1180px);
         height: min(100%, 760px);
         margin: 0 auto;
+        min-width: 0;
         display: grid;
         grid-template-columns: minmax(0, 1fr) 320px;
         grid-template-rows: minmax(0, 1fr);
@@ -55,6 +56,7 @@
         background: var(--panel);
         border: 1px solid var(--line);
         border-radius: 8px;
+        min-width: 0;
         min-height: 0;
         display: grid;
         place-items: center;
@@ -69,12 +71,67 @@
       }
 
       .panel {
+        min-width: 0;
         min-height: 0;
         overflow: hidden;
         -webkit-overflow-scrolling: touch;
         display: flex;
         flex-direction: column;
+        gap: 10px;
+      }
+
+      .panel-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
         gap: 12px;
+      }
+
+      .panel-heading {
+        margin: 0;
+        font-size: 17px;
+        letter-spacing: -0.01em;
+      }
+
+      .when-button {
+        min-height: 34px;
+        padding: 0 12px;
+        border-color: #bfd0ff;
+        background: #edf3ff;
+        color: #174eb8;
+        font-size: 13px;
+      }
+
+      .emotion-detail {
+        min-height: 112px;
+        padding: 13px 14px;
+        border: 1px solid #d9e3ff;
+        border-radius: 8px;
+        background: linear-gradient(145deg, #ffffff, #f3f7ff);
+        box-shadow: 0 8px 22px rgba(36, 107, 254, 0.08);
+        flex: 0 0 auto;
+      }
+
+      .emotion-detail-label {
+        margin: 0 0 4px;
+        color: var(--accent);
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .emotion-detail h2 {
+        margin: 0 0 5px;
+        font-size: 16px;
+        line-height: 1.25;
+      }
+
+      .emotion-detail p:last-child {
+        margin: 0;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.45;
       }
 
       .controls {
@@ -90,6 +147,39 @@
         min-height: 0;
         overflow-y: auto;
         overscroll-behavior: contain;
+      }
+
+      .emotion-button {
+        min-width: 0;
+        min-height: 58px;
+        padding: 9px 12px;
+        text-align: left;
+      }
+
+      .emotion-number,
+      .emotion-name {
+        display: block;
+      }
+
+      .emotion-number {
+        margin-bottom: 2px;
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      .emotion-name {
+        overflow: hidden;
+        font-size: 13px;
+        line-height: 1.25;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .emotion-button[aria-pressed="true"] .emotion-number {
+        color: rgba(255, 255, 255, 0.72);
       }
 
       button {
@@ -161,6 +251,87 @@
         flex: 0 0 auto;
       }
 
+      dialog {
+        width: min(720px, calc(100% - 32px));
+        max-height: min(760px, calc(100% - 32px));
+        padding: 0;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        color: var(--ink);
+        background: var(--panel);
+        box-shadow: 0 28px 80px rgba(20, 28, 50, 0.26);
+      }
+
+      dialog::backdrop {
+        background: rgba(20, 28, 50, 0.48);
+        backdrop-filter: blur(3px);
+      }
+
+      .guide-header {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 18px 20px;
+        border-bottom: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.96);
+      }
+
+      .guide-header h2 {
+        margin: 0 0 2px;
+        font-size: 19px;
+      }
+
+      .guide-header p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .close-button {
+        min-width: 36px;
+        min-height: 36px;
+        padding: 0;
+        border-radius: 999px;
+        font-size: 20px;
+        line-height: 1;
+      }
+
+      .guide-list {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+        max-height: calc(min(760px, 100vh - 32px) - 82px);
+        margin: 0;
+        padding: 16px 20px 20px;
+        overflow-y: auto;
+        list-style: none;
+      }
+
+      .guide-item {
+        padding: 12px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #f8fafc;
+      }
+
+      .guide-item strong {
+        display: block;
+        margin-bottom: 5px;
+        font-size: 13px;
+        line-height: 1.3;
+      }
+
+      .guide-item span {
+        display: block;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.45;
+      }
+
       @media (max-width: 640px) {
         body {
           padding: 14px;
@@ -168,7 +339,7 @@
 
         main {
           height: 100%;
-          grid-template-columns: 1fr;
+          grid-template-columns: minmax(0, 1fr);
           grid-template-rows: minmax(0, 1fr) minmax(190px, 38vh);
         }
 
@@ -182,6 +353,14 @@
 
         .controls {
           grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .emotion-detail {
+          min-height: 96px;
+        }
+
+        .guide-list {
+          grid-template-columns: 1fr;
         }
       }
 
@@ -199,55 +378,83 @@
       </section>
 
       <div class="panel">
-        <section class="controls" aria-label="Emotion controls">
-          <button type="button" data-emotion="1" aria-pressed="false">Emotion 1</button>
-          <button type="button" data-emotion="2" aria-pressed="false">Emotion 2</button>
-          <button type="button" data-emotion="3" aria-pressed="false">Emotion 3</button>
-          <button type="button" data-emotion="4" aria-pressed="false">Emotion 4</button>
-          <button type="button" data-emotion="5" aria-pressed="false">Emotion 5</button>
-          <button type="button" data-emotion="6" aria-pressed="false">Emotion 6</button>
-          <button type="button" data-emotion="7" aria-pressed="false">Emotion 7</button>
-          <button type="button" data-emotion="8" aria-pressed="false">Emotion 8</button>
-          <button type="button" data-emotion="9" aria-pressed="false">Emotion 9</button>
-          <button type="button" data-emotion="10" aria-pressed="false">Emotion 10</button>
-          <button type="button" data-emotion="11" aria-pressed="false">Emotion 11</button>
-          <button type="button" data-emotion="12" aria-pressed="false">Emotion 12</button>
-          <button type="button" data-emotion="13" aria-pressed="false">Emotion 13</button>
-          <button type="button" data-emotion="14" aria-pressed="false">Emotion 14</button>
-          <button type="button" data-emotion="15" aria-pressed="false">Emotion 15</button>
-          <button type="button" data-emotion="16" aria-pressed="false">Emotion 16</button>
-          <button type="button" data-emotion="17" aria-pressed="false">Emotion 17</button>
-          <button type="button" data-emotion="18" aria-pressed="false">Emotion 18</button>
-          <button type="button" data-emotion="19" aria-pressed="false">Emotion 19</button>
-          <button type="button" data-emotion="20" aria-pressed="false">Emotion 20</button>
-          <button type="button" data-emotion="21" aria-pressed="false">Emotion 21</button>
-          <button type="button" data-emotion="22" aria-pressed="false">Emotion 22</button>
-          <button type="button" data-emotion="23" aria-pressed="false">Emotion 23</button>
-          <button type="button" data-emotion="24" aria-pressed="false">Emotion 24</button>
-          <button type="button" data-emotion="25" aria-pressed="false">Emotion 25</button>
-          <button type="button" data-emotion="26" aria-pressed="false">Emotion 26</button>
-          <button type="button" data-emotion="27" aria-pressed="false">Emotion 27</button>
-          <button type="button" data-emotion="28" aria-pressed="false">Emotion 28</button>
-          <button type="button" data-emotion="29" aria-pressed="false">Emotion 29</button>
-          <button type="button" data-emotion="30" aria-pressed="false">Emotion 30</button>
-          <button type="button" data-emotion="31" aria-pressed="false">Emotion 31</button>
-          <button type="button" data-emotion="32" aria-pressed="false">Emotion 32</button>
-          <button type="button" data-emotion="33" data-new="true" aria-pressed="false">Emotion 33</button>
-          <button type="button" data-emotion="34" data-new="true" aria-pressed="false">Emotion 34</button>
-          <button type="button" data-emotion="35" data-new="true" aria-pressed="false">Emotion 35</button>
-          <button type="button" data-emotion="36" data-new="true" aria-pressed="false">Emotion 36</button>
-          <button type="button" data-emotion="37" data-new="true" aria-pressed="false">Emotion 37</button>
-          <button type="button" data-emotion="38" data-new="true" aria-pressed="false">Emotion 38</button>
+        <div class="panel-header">
+          <h1 class="panel-heading">Mascot animations</h1>
+          <button class="when-button" id="open-guide" type="button" aria-label="See when to use each animation">When</button>
+        </div>
+
+        <section class="emotion-detail" id="emotion-detail" aria-live="polite">
+          <p class="emotion-detail-label">Animation guide</p>
+          <h2 id="detail-title">Choose an emotion</h2>
+          <p id="detail-description">Select an animation to see when it should be used.</p>
         </section>
+
+        <section class="controls" id="emotion-controls" aria-label="Emotion controls"></section>
 
         <div class="status" id="status" role="status">Loading mascot...</div>
       </div>
     </main>
 
+    <dialog id="usage-guide" aria-labelledby="guide-title">
+      <div class="guide-header">
+        <div>
+          <h2 id="guide-title">Mascot animations</h2>
+          <p>When to use each emotion</p>
+        </div>
+        <button class="close-button" id="close-guide" type="button" aria-label="Close guide">&times;</button>
+      </div>
+      <ol class="guide-list" id="guide-list"></ol>
+    </dialog>
+
     <script src="https://unpkg.com/@rive-app/canvas@2.24.0/rive.js"></script>
     <script>
+      const emotions = [
+        { title: "Welcome Smile", description: "Use when the user enters the spelling activity. The mascot welcomes the player with a warm, friendly smile." },
+        { title: "First Word Correct", description: "Use when the player spells the very first word correctly." },
+        { title: "Correct Answer", description: "Use whenever the player gives a correct answer." },
+        { title: "Struggling With Multiple Attempts", description: "Use after 3–4 attempts, when the player may need help. Gently suggest using the Slow Hint." },
+        { title: "Repeated Mistakes", description: "Use when the player makes multiple mistakes or needs more than two attempts to spell the word correctly." },
+        { title: "3-Word Streak", description: "Use when the player gets three words correct in a row." },
+        { title: "Longer Word Challenge", description: "Use when the player is presented with a longer or more difficult word." },
+        { title: "Encouragement After a Broken Streak · Part 1", description: "Use after a streak is broken. Encourage the player to refocus and start building the streak again. This animation needs a variation." },
+        { title: "Streak Lost", description: "Use immediately when the player loses their current streak." },
+        { title: "Encouragement After a Broken Streak · Part 2", description: "Use as another variation after a broken streak to motivate the player to regain focus and continue. This animation needs a variation." },
+        { title: "Visible Confusion", description: "Use when a player previously spelled a word correctly but now gets the same or a similar word wrong." },
+        { title: "Struggles but Gets It Correct", description: "Use when the player makes one or more attempts but eventually spells the word correctly." },
+        { title: "Almost a Perfect Streak", description: "Use when the player has spelled six words correctly in a row and is close to a perfect streak." },
+        { title: "Solves a Difficult / Long Word", description: "Use when the player successfully spells a longer or more difficult word." },
+        { title: "Idle for a Long Time · 1", description: "Use when the player has not interacted with the spelling activity for a while." },
+        { title: "Misses a Word", description: "Use when the player spells a word incorrectly." },
+        { title: "Easy Word Offered", description: "Use when the app offers an easier word, especially after the player has been struggling." },
+        { title: "Another Missed Word", description: "Use as an alternative reaction when the player spells a word incorrectly." },
+        { title: "Multiple Major Mistakes", description: "Use after several incorrect attempts on one word. Keep the reaction playful rather than discouraging." },
+        { title: "Perfect Performance / On Fire", description: "Use when the player is performing extremely well and continuously answering correctly." },
+        { title: "Correct Answer Variation", description: "Use as an alternative positive animation after a correct spelling." },
+        { title: "Saves the Streak at the Last Moment", description: "Use when the player is close to losing a streak but spells the word correctly at the last moment." },
+        { title: "5-Word Streak", description: "Use when the player gets five words correct in a row." },
+        { title: "Misses a Word Variation", description: "Use as another animation variation when the player spells a word incorrectly." },
+        { title: "On Track for a Perfect Score", description: "Use when the player is doing very well and is close to completing the activity with a perfect score." },
+        { title: "Correct Answer Variation", description: "Use as another positive animation after a correct spelling." },
+        { title: "Mixed Performance", description: "Use when the player has a mixture of correct and incorrect answers during the session." },
+        { title: "Correct Answer Variation", description: "Use as another animation variation for a correctly spelled word." },
+        { title: "Encouraging the Slow Hint", description: "Use when the player appears to be struggling and encourage them to use the Slow Hint." },
+        { title: "Correct Answer Variation", description: "Use as another celebratory animation when the player gives a correct answer." },
+        { title: "Idle for a Long Time · 2", description: "Use as a second idle animation when the player has been inactive for a longer period." },
+        { title: "Two Correct in a Row", description: "Use when the player spells two consecutive words correctly." },
+        { title: "Misses an Easy Word", description: "Use after an unexpected miss on an easy word. Show playful surprise without making the player feel bad." },
+        { title: "Continuously Missing Words", description: "Use when the player repeatedly struggles to spell several words correctly." },
+        { title: "Taking a Long Time to Type", description: "Use when the player spends a long time typing or thinking about the spelling." },
+        { title: "Shocked by a Major Spelling Mistake", description: "Use when an important letter or major part of the word is missing. React with playful shock." },
+        { title: "Saves the Streak at the Last Moment · Part 2", description: "Use as a second variation when the player saves their streak at the last moment." },
+        { title: "Continuously Missing Words · Variation", description: "Use as another variation when the player continues to struggle with multiple words in a row." },
+      ];
+
       const canvas = document.querySelector("#mascot");
-      const buttons = Array.from(document.querySelectorAll("[data-emotion]"));
+      const controls = document.querySelector("#emotion-controls");
+      const detailTitle = document.querySelector("#detail-title");
+      const detailDescription = document.querySelector("#detail-description");
+      const usageGuide = document.querySelector("#usage-guide");
+      const guideList = document.querySelector("#guide-list");
       const status = document.querySelector("#status");
       const stateMachineName = "State Machine 1";
       const idleEmotionValue = 67;
@@ -255,6 +462,32 @@
       let emotionInput;
       let startEmotionTimer;
       let loadVersion = 0;
+
+      emotions.forEach((emotion, index) => {
+        const number = index + 1;
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "emotion-button";
+        button.dataset.emotion = number;
+        button.setAttribute("aria-pressed", "false");
+        if (number >= 33) button.dataset.new = "true";
+        button.innerHTML = `<span class="emotion-number">Emotion ${number}</span><span class="emotion-name">${emotion.title}</span>`;
+        controls.append(button);
+
+        const guideItem = document.createElement("li");
+        guideItem.className = "guide-item";
+        guideItem.innerHTML = `<strong>Emotion ${number} · ${emotion.title}</strong><span>${emotion.description}</span>`;
+        guideList.append(guideItem);
+      });
+
+      const buttons = Array.from(document.querySelectorAll("[data-emotion]"));
+
+      const showEmotionDetails = (value) => {
+        const emotion = emotions[value - 1];
+        if (!emotion) return;
+        detailTitle.textContent = `Emotion ${value} · ${emotion.title}`;
+        detailDescription.textContent = emotion.description;
+      };
 
       const setButtonsEnabled = (enabled) => {
         buttons.forEach((button) => {
@@ -343,6 +576,7 @@
         }
 
         setActiveButton(value);
+        showEmotionDetails(value);
         status.textContent = `Loading emotion ${value}`;
         loadMascot(value);
       };
@@ -353,6 +587,18 @@
         button.addEventListener("click", () => {
           setEmotion(Number(button.dataset.emotion));
         });
+      });
+
+      document.querySelector("#open-guide").addEventListener("click", () => {
+        usageGuide.showModal();
+      });
+
+      document.querySelector("#close-guide").addEventListener("click", () => {
+        usageGuide.close();
+      });
+
+      usageGuide.addEventListener("click", (event) => {
+        if (event.target === usageGuide) usageGuide.close();
       });
 
       window.addEventListener("resize", () => {
