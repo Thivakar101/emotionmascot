@@ -387,17 +387,17 @@
         body {
           display: block;
           min-height: 100dvh;
-          height: auto;
+          height: 100dvh;
           padding: 12px;
-          overflow: auto;
+          overflow: hidden;
         }
 
         main {
           width: 100%;
-          height: auto;
-          min-height: calc(100dvh - 24px);
+          height: calc(100dvh - 24px);
+          min-height: 0;
           grid-template-columns: minmax(0, 1fr);
-          grid-template-rows: clamp(340px, 54dvh, 560px) auto;
+          grid-template-rows: clamp(300px, 48dvh, 520px) minmax(0, 1fr);
           gap: 12px;
         }
 
@@ -424,7 +424,8 @@
 
         .panel {
           gap: 8px;
-          overflow: visible;
+          overflow: hidden;
+          min-height: 0;
         }
 
         .panel-heading {
@@ -433,9 +434,12 @@
 
         .controls {
           grid-template-columns: repeat(2, minmax(0, 1fr));
-          flex: none;
-          max-height: none;
-          overflow: visible;
+          flex: 1 1 auto;
+          min-height: 0;
+          max-height: 100%;
+          overflow-y: auto;
+          -webkit-overflow-scrolling: touch;
+          overscroll-behavior: contain;
         }
 
         .emotion-detail {
